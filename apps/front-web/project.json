@@ -1,0 +1,74 @@
+{
+  "root": "apps/front-web",
+  "sourceRoot": "apps/front-web/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/front-web",
+        "index": "apps/front-web/src/index.html",
+        "baseHref": "/",
+        "main": "apps/front-web/src/main.tsx",
+        "polyfills": "apps/front-web/src/polyfills.ts",
+        "tsConfig": "apps/front-web/tsconfig.app.json",
+        "assets": [
+          "apps/front-web/src/favicon.ico",
+          "apps/front-web/src/assets"
+        ],
+        "styles": [],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/front-web/src/environments/environment.ts",
+              "with": "apps/front-web/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "front-web:build",
+        "hmr": true,
+        "proxyConfig": "apps/front-web/proxy.conf.json"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "front-web:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/front-web/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/front-web"],
+      "options": {
+        "jestConfig": "apps/front-web/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
