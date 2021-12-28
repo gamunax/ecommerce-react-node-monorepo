@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+
+const authRouters = require('./app/routes/auth.router');
 const userRouters = require('./app/routes/user.router');
 
 import { Message } from '@ecommerce/api-interfaces';
@@ -22,6 +24,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // * routes middleware
+app.use('/api', authRouters);
 app.use('/api', userRouters);
 
 const port = process.env.port || 3333;
