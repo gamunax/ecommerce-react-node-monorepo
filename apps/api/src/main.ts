@@ -1,16 +1,31 @@
 import * as express from 'express';
+const mongoose = require('mongoose');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+require('dotenv').config();
+const userRouters = require('./app/routes/user.router');
+
 import { Message } from '@ecommerce/api-interfaces';
 
 const app = express();
+mongoose.connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('DB connected'));
 
-const greeting: Message = { message: 'Welcome to api!' };
+const greeting: Message = { message: 'Welcome to api2!' };
 
-app.get('/api', (req, res) => {
-  res.send(greeting);
-});
+// * middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(cookieParser());
+
+// * routes middleware
+app.use('/api', userRouters);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
-  console.log('Listening at http://localhost:' + port + '/api');
+  console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);
