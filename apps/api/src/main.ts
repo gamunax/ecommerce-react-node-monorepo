@@ -7,6 +7,7 @@ require('dotenv').config();
 
 const authRouters = require('./app/routes/auth.router');
 const userRouters = require('./app/routes/user.router');
+const categoryRouters = require('./app/routes/category.router');
 
 import { Message } from '@ecommerce/api-interfaces';
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 // * routes middleware
 app.use('/api', authRouters);
 app.use('/api', userRouters);
+app.use('/api', categoryRouters);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
