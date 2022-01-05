@@ -7,12 +7,11 @@ const {
   userById
 } = require('../controllers/user.controller');
 
-router.param('userId', userById);
-
 router.get('/secret/:userId', requireSignin, isAuth, isAdmin, (req: any, res) => {
   res.json({
     user: req.profile
   })
 });
+router.param('userId', userById);
 
 module.exports = router;
