@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 require('dotenv').config();
 
 const authRouters = require('./app/routes/auth.router');
@@ -24,6 +25,7 @@ const greeting: Message = { message: 'Welcome to api2!' };
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 // * routes middleware
 app.use('/api', authRouters);
