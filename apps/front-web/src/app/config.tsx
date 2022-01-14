@@ -1,0 +1,1 @@
+export const API = process.env['NX_REACT_APP_API_URL'];
