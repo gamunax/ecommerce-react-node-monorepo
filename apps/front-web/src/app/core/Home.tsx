@@ -1,5 +1,13 @@
-import React from "react";
+import React from 'react';
+import Layout from './Layout';
 
-const Home = () => <div>Home</div>;
+const Home = () => (
+  <Layout
+    title="Home Page"
+    description="Node React E-commerce Monorepo App"
+  >
+    ...
+  </Layout>
+);
 
 export default Home;
