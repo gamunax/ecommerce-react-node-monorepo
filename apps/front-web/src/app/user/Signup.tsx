@@ -26,13 +26,12 @@ const Signup = () => {
       },
       body: JSON.stringify(user),
     })
-    .then(response => {
-      return response.json()
-    })
-    .catch(err => {
-      console.error(err);
-      
-    })
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const clickSubmit = (event: any) => {
