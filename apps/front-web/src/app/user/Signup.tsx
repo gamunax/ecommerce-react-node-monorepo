@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { API } from '../config';
 import Layout from '../core/Layout';
 
@@ -7,36 +8,52 @@ const Signup = () => {
     name: '',
     email: '',
     password: '',
-    error: false,
+    error: '',
     success: false,
   });
 
-  const { name, email, password } = values;
+  const { name, email, password, error, success } = values;
 
   const handleChange = (name: any) => (event: any) => {
-    setValues({ ...values, error: false, [name]: event.target.value });
+    setValues({ ...values, error: '', [name]: event.target.value });
   };
 
-  const signup = (user: { name: string; email: string; password: string }) => {
-    fetch(`${API}/signup`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .catch((err) => {
-        console.error(err);
+  const signup = async (user: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    try {
+      const response = await fetch(`${API}/signup`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
       });
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const clickSubmit = (event: any) => {
+  const clickSubmit = async (event: any) => {
     event.preventDefault();
-    signup({ name, email, password });
+    setValues({ ...values, error: '' });
+    const data = await signup({ name, email, password });
+    if (data.errors) {
+      setValues({ ...values, error: data.errors, success: false });
+    } else {
+      setValues({
+        ...values,
+        name: '',
+        email: '',
+        password: '',
+        error: '',
+        success: true,
+      });
+    }
   };
 
   const signUpForm = () => (
@@ -47,6 +64,7 @@ const Signup = () => {
           type="text"
           className="form-control"
           placeholder="Input your name"
+          value={name}
           onChange={handleChange('name')}
         />
       </div>
@@ -57,6 +75,7 @@ const Signup = () => {
           type="email"
           className="form-control"
           placeholder="Input your email"
+          value={email}
           onChange={handleChange('email')}
         />
       </div>
@@ -66,6 +85,7 @@ const Signup = () => {
         <input
           type="password"
           className="form-control"
+          value={password}
           onChange={handleChange('password')}
         />
       </div>
@@ -76,14 +96,33 @@ const Signup = () => {
     </form>
   );
 
+  const showErrow = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? '' : 'none' }}
+    >
+      {error}
+    </div>
+  );
+
+  const showSuccess = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: success ? '' : 'none' }}
+    >
+      New account is created. Please <Link to='/signin'>Signin</Link>
+    </div>
+  );
+
   return (
     <Layout
       title="Signup"
       description="Signin to Node React E-commerce Monorepo App"
       className="container col-md-8 offset-md-2"
     >
+      {showSuccess()}
+      {showErrow()}
       {signUpForm()}
-      {JSON.stringify(values)}
     </Layout>
   );
 };
