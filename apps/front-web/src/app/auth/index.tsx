@@ -36,23 +36,24 @@ export const signin = async (user: { email: string; password: string }) => {
   }
 };
 
-export const authenticate = (data: any, next: any) => {
+export const authenticate = (data: any) => {
   localStorage?.setItem('jwt', JSON.stringify(data?.token));
-  next;
+  return; 
 };
 
 export const signout = async (next: any) => {
   try {
     localStorage?.removeItem('jwt');
     next();
-    console.log(next);
-    const response = await fetch(`${API}/signout`, { method: 'GET'});
-    console.log(response);
+    const response = await fetch(`${API}/signout`, { method: 'GET' });
     return response;
   } catch (error) {
     console.error(error);
     return;
   }
-  
-  
+};
+
+export const isAuthenticated = () => {
+  const jwt = JSON.parse(localStorage?.getItem('jwt') as string);
+  return !!jwt;
 };

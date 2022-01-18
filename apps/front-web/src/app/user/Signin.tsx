@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Layout from '../core/Layout';
 import { signin } from '../auth';
 import { authenticate } from '../auth/index';
+import { resolve } from 'path';
 
 const Signin = () => {
   const [values, setValues] = useState({
@@ -23,21 +24,20 @@ const Signin = () => {
     event.preventDefault();
     setValues({ ...values, error: '', loading: true });
     const data = await signin({ email, password });
-    if (data.err) {
-      setValues({
+
+    if (data?.err) {
+     setValues({
         ...values,
         error: data.err,
         redirecToReferrer: false,
         loading: false,
       });
     } else {
-      authenticate(
-        data,
-        setValues({
-          ...values,
-          redirecToReferrer: true,
-        })
-      );
+      authenticate(data);
+      setValues({
+        ...values,
+        redirecToReferrer: true,
+      })
     }
   };
 
@@ -89,6 +89,8 @@ const Signin = () => {
 
   const redirectUser = () => {
     if (redirecToReferrer) {
+      console.log('redigiri');
+      
       return <Redirect to="/" />;
     }
     return;
