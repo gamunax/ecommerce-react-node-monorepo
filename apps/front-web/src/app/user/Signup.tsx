@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API } from '../config';
 import Layout from '../core/Layout';
+import { signup } from '../auth';
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -16,26 +16,6 @@ const Signup = () => {
 
   const handleChange = (name: any) => (event: any) => {
     setValues({ ...values, error: '', [name]: event.target.value });
-  };
-
-  const signup = async (user: {
-    name: string;
-    email: string;
-    password: string;
-  }) => {
-    try {
-      const response = await fetch(`${API}/signup`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
-      });
-      return await response.json();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   const clickSubmit = async (event: any) => {
@@ -63,7 +43,7 @@ const Signup = () => {
         <input
           type="text"
           className="form-control"
-          placeholder="Input your name"
+          placeholder="Enter your name"
           value={name}
           onChange={handleChange('name')}
         />
@@ -74,7 +54,7 @@ const Signup = () => {
         <input
           type="email"
           className="form-control"
-          placeholder="Input your email"
+          placeholder="Enter your email"
           value={email}
           onChange={handleChange('email')}
         />
@@ -85,6 +65,7 @@ const Signup = () => {
         <input
           type="password"
           className="form-control"
+          placeholder="Enter your password"
           value={password}
           onChange={handleChange('password')}
         />
@@ -110,7 +91,7 @@ const Signup = () => {
       className="alert alert-info"
       style={{ display: success ? '' : 'none' }}
     >
-      New account is created. Please <Link to='/signin'>Signin</Link>
+      New account is created. Please <Link to="/signin">Signin</Link>
     </div>
   );
 
