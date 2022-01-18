@@ -39,7 +39,7 @@ exports.signin = (req, res) => {
 }
 
 exports.signout = (req, res) => {
-  // res.json({ message: ''})
+  res.json({ message: 'Signout success'})
 }
 
 exports.requireSignin = expressJwt({

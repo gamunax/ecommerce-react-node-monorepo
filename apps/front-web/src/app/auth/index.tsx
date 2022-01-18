@@ -40,3 +40,19 @@ export const authenticate = (data: any, next: any) => {
   localStorage?.setItem('jwt', JSON.stringify(data?.token));
   next;
 };
+
+export const signout = async (next: any) => {
+  try {
+    localStorage?.removeItem('jwt');
+    next();
+    console.log(next);
+    const response = await fetch(`${API}/signout`, { method: 'GET'});
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+  
+  
+};
