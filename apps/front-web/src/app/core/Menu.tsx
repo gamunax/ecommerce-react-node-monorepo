@@ -19,7 +19,7 @@ const Menu = ({ history }: any) => (
         </Link>
       </li>
 
-      {isAuthenticated() && isAuthenticated()?.user?.rol === 0 || !isAuthenticated()?.user?.rol && (
+      {isAuthenticated() && isAuthenticated()?.user?.role === 0 && (
         <li className="nav-item">
           <Link
             className="nav-link"
@@ -31,7 +31,7 @@ const Menu = ({ history }: any) => (
         </li>
       )}
 
-      {isAuthenticated() && isAuthenticated()?.user?.rol === 1 && (
+      {isAuthenticated() && isAuthenticated()?.user?.role === 1 && (
         <li className="nav-item">
           <Link
             className="nav-link"
