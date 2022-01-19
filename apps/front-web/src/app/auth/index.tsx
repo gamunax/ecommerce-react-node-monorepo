@@ -37,7 +37,7 @@ export const signin = async (user: { email: string; password: string }) => {
 };
 
 export const authenticate = (data: any) => {
-  localStorage?.setItem('jwt', JSON.stringify(data?.token));
+  localStorage?.setItem('jwt', JSON.stringify(data));
   return; 
 };
 
@@ -55,5 +55,5 @@ export const signout = async (next: any) => {
 
 export const isAuthenticated = () => {
   const jwt = JSON.parse(localStorage?.getItem('jwt') as string);
-  return !!jwt;
+  return !!jwt && jwt;
 };

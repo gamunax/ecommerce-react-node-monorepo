@@ -22,8 +22,8 @@ const Menu = ({ history }: any) => (
       <li className="nav-item">
         <Link
           className="nav-link"
-          style={isActive(history, '/dashboard')}
-          to="/dashboard"
+          style={isActive(history, '/user/dashboard')}
+          to="/user/dashboard"
         >
           Dashboard
         </Link>
