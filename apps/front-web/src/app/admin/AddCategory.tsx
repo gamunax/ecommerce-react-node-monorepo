@@ -17,7 +17,7 @@ const AddCategory = () => {
     setName(e.target.value);
   };
 
-  const clickSubmit = async (e: any) => {
+  const clickSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
