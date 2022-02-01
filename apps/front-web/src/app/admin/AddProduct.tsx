@@ -49,8 +49,25 @@ const AddProduct = () => {
   };
 
   const clickSubmit = (event: any) => {
-    
-  }
+    event.preventDefault();
+    setValues({ ...values, error: '', loading: true });
+    createProduct(user._id, token, formData).then((data) => {
+      if (data.err) {
+        setValues({ ...values, error: data.err });
+      } else {
+        setValues({
+          ...values,
+          name: '',
+          description: '',
+          photo: '',
+          price: '',
+          quantity: '',
+          loading: false,
+          createdProduct: data.name
+        });
+      }
+    });
+  };
 
   const newPostForm = () => (
     <form className="mb-3" onSubmit={clickSubmit}>
@@ -101,6 +118,7 @@ const AddProduct = () => {
         <label className="text-muted">Category</label>
         <select className="form-control" onChange={handleChange('category')}>
           <option value="61cbe913945e0c822d259611">Node</option>
+          <option value="61cbe913945e0c822d259611">PHP</option>
         </select>
       </div>
 

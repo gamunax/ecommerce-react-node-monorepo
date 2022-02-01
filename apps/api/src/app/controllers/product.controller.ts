@@ -233,7 +233,7 @@ exports.listCategories = (req, res) => {
         
           if (err) {
               return res.status(400).json({
-                  error: "Products not found"
+                  err: "Products not found"
               });
           }
           res.json({
