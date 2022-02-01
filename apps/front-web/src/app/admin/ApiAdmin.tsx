@@ -16,3 +16,19 @@ export const createCategory = async (userId: string, token: string, category: an
     console.error(error);
   }
 };
+
+export const createProduct = async (userId: string, token: string, product: any) => {
+  try {
+    const response = await fetch(`${API}/product/create/${userId}`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: product,
+    });
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
