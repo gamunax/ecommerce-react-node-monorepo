@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import Layout from '../core/Layout';
 import { isAuthenticated } from '../auth';
 import { Link } from 'react-router-dom';
-import { createProduct } from './ApiAdmin';
+import { createProduct, getCategories } from './ApiAdmin';
 
 const AddProduct = () => {
   const { user, token } = isAuthenticated();
@@ -38,8 +38,18 @@ const AddProduct = () => {
     formData,
   } = values;
 
+  // load categories and set form data
+  const init = async () => {
+    const data = await getCategories();
+    if (data.err) {
+      setValues({ ...values, error: data.err });
+    } else {
+      setValues({ ...values, categories: data, formData: new FormData() });
+    }
+  };
+
   useEffect(() => {
-    setValues({ ...values, formData: new FormData() });
+    init();
   }, []);
 
   const handleChange = (name: string) => (event: any) => {
@@ -63,7 +73,8 @@ const AddProduct = () => {
           price: '',
           quantity: '',
           loading: false,
-          createdProduct: data.name
+          shipping: '',
+          createdProduct: data.name,
         });
       }
     });
@@ -117,14 +128,20 @@ const AddProduct = () => {
       <div className="form-group">
         <label className="text-muted">Category</label>
         <select className="form-control" onChange={handleChange('category')}>
-          <option value="61cbe913945e0c822d259611">Node</option>
-          <option value="61cbe913945e0c822d259611">PHP</option>
+          <option>Please select</option>
+          {categories &&
+            categories.map((row: any, index) => (
+              <option key={index} value={row._id}>
+                {row.name}
+              </option>
+            ))}
         </select>
       </div>
 
       <div className="form-group">
         <label className="text-muted">Shipping</label>
         <select className="form-control" onChange={handleChange('shipping')}>
+          <option>Please select</option>
           <option value="0">No</option>
           <option value="1">Yes</option>
         </select>
@@ -145,13 +162,43 @@ const AddProduct = () => {
     </form>
   );
 
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? '' : 'none' }}
+    >
+      {error}
+    </div>
+  );
+
+  const showSuccess = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: createdProduct ? '' : 'none' }}
+    >
+      <h2>{`${createdProduct} is created`}</h2>
+    </div>
+  );
+
+  const showLoading = () =>
+    loading && (
+      <div className="alert.alert-success">
+        <h2>Loading...</h2>
+      </div>
+    );
+
   return (
     <Layout
       title="Add a new product"
       description={`Good day ${user?.name}, ready to add a new product?`}
     >
       <div className="row">
-        <div className="col-md-8 offset-md-2">{newPostForm()}</div>
+        <div className="col-md-8 offset-md-2">
+          {showLoading()}
+          {showSuccess()}
+          {showError()}
+          {newPostForm()}
+        </div>
       </div>
     </Layout>
   );
